@@ -49,7 +49,7 @@ export default function Details() {
 
   return (
     <>
-      <Stack.Screen options={{ title: params.name?.toString() || "Details" }} />
+      <Stack.Screen />
       <ScrollView contentContainerStyle={styles.container}>
         {loading ? (
           <Text style={styles.title}>Loading...</Text>
