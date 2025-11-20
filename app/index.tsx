@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Pokemon } from "./pokemon";
@@ -8,10 +9,10 @@ export default function Index() {
 
   useEffect(() => {
     // fetch pokemon data from pokeapi.co
-    fetchPokemns();
+    fetchPokemons();
   }, []);
 
-  async function fetchPokemns() {
+  async function fetchPokemons() {
     try {
       const response = await fetch(
         "https://pokeapi.co/api/v2/pokemon?limit=100"
@@ -32,7 +33,6 @@ export default function Index() {
       );
 
       setPokemons(detailedPokemons);
-      console.log(JSON.stringify(detailedPokemons[0], null, 2));
     } catch (error) {
       console.error("Error fetching Pokemon data:", error);
     }
@@ -61,31 +61,34 @@ export default function Index() {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={{ gap: 16,  padding:16 }}
-    >
+    <ScrollView contentContainerStyle={{ gap: 16, padding: 16 }}>
       {pokemons.map((pokemon: PokemonDetailed) => (
-        <View
+        <Link
           key={pokemon.name}
+          href={{ pathname : "/details", params: {name: pokemon.name}}}
           style={{
             backgroundColor: getTypeColor(pokemon.types[0].type.name) + 48,
             padding: 20,
             borderRadius: 30,
           }}
         >
-          <Text style={styles.name}>{pokemon.name}</Text>
-          <Text style={styles.types}>{pokemon.types[0].type.name}</Text>
-          <View style={{ flexDirection: "row" }}>
-            <Image
-              source={{ uri: pokemon.image }}
-              style={{ width: 200, height: 200 }}
-            />
-            <Image
-              source={{ uri: pokemon.imageBack }}
-              style={{ width: 200, height: 200 }}
-            />
+          <View>
+            <Text style={styles.name}>{pokemon.name}</Text>
+            <Text style={styles.types}>{pokemon.types[0].type.name}</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Image
+                source={{ uri: pokemon.image }}
+                style={{ width: 150, height: 150 }}
+                resizeMode="contain"
+              />
+              <Image
+                source={{ uri: pokemon.imageBack }}
+                style={{ width: 150, height: 150 }}
+                resizeMode="contain"
+              />
+            </View>
           </View>
-        </View>
+        </Link>
       ))}
     </ScrollView>
   );
